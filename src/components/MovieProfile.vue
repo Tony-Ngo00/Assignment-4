@@ -22,15 +22,13 @@
     <table>
       <tr>
         <td id="left">
-          <img id="cover">
+          <!-- <img id="cover" {{cover}}> -->
         </td>
-        <td id="right">
-          <p id="info"></p>
-          <p id="basicInfo"></p>
-          <p id="vote"></p>
-          <p id="overviewLabel"></p>
-          <p id="overviewText"></p> 
-          <iframe id="video"></iframe>
+        <td id="right" >
+          <p id="info">{{info}}</p>
+          <p id="overviewLabel">{{overviewLabel}}</p>
+          <p id="overviewText">{{overviewText}}</p> 
+          <iframe id="video">{{video}}</iframe>
         </td>
       </tr>
     </table>
@@ -44,7 +42,7 @@
   
   const movie = ref(810693);
   const display = ref("");
-  const info = ref("");
+  let info = ref("");
   const overviewLabel = ref("");
   const overviewText = ref("");
   const cover = ref("");
@@ -57,17 +55,13 @@
           append_to_response: "videos",
       }
     })
-    console.log(movie.value);
-
-    let infoResults = searchMovie.then((selectedMovie) => {       
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-    })
+    let selectedMovie = searchMovie.then((movieData) => { info = movieData.data.original_title })
   }
 </script>
 
 <style scoped>
   body {
-  background-color: rgba(0, 0, 0, 0.856);
+  background-color: rgba(240, 235, 235, 0.856);
   }
 
   h1 {
