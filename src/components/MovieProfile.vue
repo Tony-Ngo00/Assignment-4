@@ -3,8 +3,8 @@
 
   <div class="movie-container">
     <label id = "selection" for="Movies">Choose a Movie:</label>
-    <select v-model="movie" >
-      <option value="810693" selected>Jujutsu Kaisen 0</option>
+    <select v-model="movie">
+      <option value="810693">Jujutsu Kaisen 0</option>
       <option value="635302">Demon Slayer - Kimetsu no Yaiba- The Movie: Mugen Train</option>
       <option value="768744">My Hero Academia: World Heroes' Mission</option>
       <option value="843241">The Seven Deadly Sins: Cursed by Light</option>
@@ -15,10 +15,10 @@
       <option value="503314">Dragon Ball Super: Broly</option>
       <option value="610150">Dragon Ball Super: Super Hero</option> 
     </select>
-    <button @click="getMovie">Get</button>
+    <button id="getButton" @click=selectOption()>Get</button>
   </div>
   <body>
-  <div id="display" hidden>
+  <div id="display">
     <table>
       <tr>
         <td id="left">
@@ -40,9 +40,29 @@
 
 <script setup>
   import axios from "axios";
-  // import { ref } from 'vue';
-
+  import { ref } from 'vue';
   
+  const movie = ref(810693);
+  const display = ref("");
+  const info = ref("");
+  const overviewLabel = ref("");
+  const overviewText = ref("");
+  const cover = ref("");
+  const video = ref("");
+
+  function selectOption() {
+    let searchMovie = axios.get(`https://api.themoviedb.org/3/movie/${movie.value}`, {
+      params: {
+          api_key: "779ebe30f392f779f18a739e5df2f414",
+          append_to_response: "videos",
+      }
+    })
+    console.log(movie.value);
+
+    let infoResults = searchMovie.then((selectedMovie) => {       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    })
+  }
 </script>
 
 <style scoped>
