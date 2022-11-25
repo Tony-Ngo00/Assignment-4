@@ -18,17 +18,26 @@
     <button id="getButton" @click=selectOption()>Get</button>
   </div>
   <body>
-  <div id="display">
+  <div >
     <table>
       <tr>
         <td id="left">
-          <!-- <img id="cover" {{cover}}> -->
+          <img :src="poster">
         </td>
         <td id="right" >
-          <p id="info">{{info}}</p>
-          <p id="overviewLabel">{{overviewLabel}}</p>
+          <p id="info">Title: {{title}}</p>
+          <p id="info">Original Title: {{originalTitle}}</p>
+          <p id="special" class="indent">Genre:</p>
+          <p id="special" v-for="genre in genres" style="display: inline">-{{genre.name}}- </p>
+          <p id="info">Release Date: {{releaseDate}}</p>
+          <p id="info">Popularity: {{popularity}}</p>
+          <p id="info">Revenue: {{revenue}}</p>
+          <p id="info">Vote Average: {{voteAverage}}</p>
+          <p id="info">Cote Count: {{voteCount}}</p>
+          <p id="info">Runtime: {{runtime}} mins</p>
+          <p id="overviewLabel">Overview:</p>
           <p id="overviewText">{{overviewText}}</p> 
-          <iframe id="video">{{video}}</iframe>
+          <iframe :src="video"></iframe>
         </td>
       </tr>
     </table>
@@ -41,12 +50,20 @@
   import { ref } from 'vue';
   
   const movie = ref(810693);
-  const display = ref("");
-  let info = ref("");
-  const overviewLabel = ref("");
-  const overviewText = ref("");
-  const cover = ref("");
-  const video = ref("");
+  const contains = ref(false);
+
+  let poster = ref("");
+  let title = ref("");
+  let originalTitle = ref("");
+  let genres = ref([]);
+  let releaseDate = ref("");
+  let popularity = ref("");
+  let revenue = ref("");
+  let voteAverage = ref("");
+  let voteCount = ref("");
+  let runtime = ref("");
+  let overviewText = ref("");
+  let video = ref("");
 
   function selectOption() {
     let searchMovie = axios.get(`https://api.themoviedb.org/3/movie/${movie.value}`, {
@@ -55,15 +72,33 @@
           append_to_response: "videos",
       }
     })
-    let selectedMovie = searchMovie.then((movieData) => { info = movieData.data.original_title })
+    console.log(searchMovie);
+
+    function formatPrice(value) {
+        var formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+        return formatter.format(value);
+    }
+    
+    let posterTemp = searchMovie.then((movieData) => { poster.value = "https://image.tmdb.org/t/p/w500" + movieData.data.poster_path})
+    let titleTemp = searchMovie.then((movieData) => { title.value = movieData.data.title })
+    let originalTitleTemp = searchMovie.then((movieData) => { originalTitle.value = movieData.data.original_title })
+    let genresTemp = searchMovie.then((movieData) => { genres.value = movieData.data.genres })
+    let releaseDateTemp = searchMovie.then((movieData) => { releaseDate.value = movieData.data.release_date })
+    let popularityTemp = searchMovie.then((movieData) => { popularity.value = movieData.data.popularity })
+    let revenueTemp = searchMovie.then((movieData) => { revenue.value = formatPrice(movieData.data.revenue) })
+    let voteAverageTemp = searchMovie.then((movieData) => { voteAverage.value = movieData.data.vote_average })
+    let voteCountTemp = searchMovie.then((movieData) => { voteCount.value = movieData.data.vote_count })
+    let runtimeTemp = searchMovie.then((movieData) => { runtime.value = movieData.data.runtime })
+    let overviewTextTemp = searchMovie.then((movieData) => { overviewText.value = movieData.data.overview })
+    let videoTemp = searchMovie.then((movieData) => { video.value = "https://www.youtube.com/embed/" + (movieData.data.videos.results.filter((trailer) => trailer.type === "Trailer")).at(0).key })
   }
+
 </script>
 
 <style scoped>
-  body {
-  background-color: rgba(240, 235, 235, 0.856);
-  }
-
   h1 {
     padding-left: 20px;
     color: rgb(202, 26, 26);
@@ -108,4 +143,72 @@
     border-width: 3px;
   }
 
+  table {
+    width: 1229px;
+    height: 850px;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: rgb(0, 0, 0);
+  }
+
+  #info {
+    margin-top: 0%;
+    padding-left: 20px;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(196, 67, 67);
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  #special {
+    margin: 0%;
+    display:inline;
+    margin-top: 0%;
+    padding-left: 20px;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(196, 67, 67);
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  #overviewLabel {
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 0%;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    color: rgb(196, 67, 67);
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  #overviewText {
+    padding-left: 20px;
+    margin-top: 0%;
+    color: rgb(196, 67, 67);
+    width: 660px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  img {
+    margin-left: 20px;
+    margin-top: 0%;
+    width: 500px;
+    height: 700px;
+  }
+
+  iframe {
+    margin-left: 20px;
+    height: 370px;
+    aspect-ratio: 16/9;
+    border-width: 5px;
+    border-color: rgba(71, 70, 70, 0.76);
+  }
 </style>
