@@ -18,19 +18,19 @@
     <button id="getButton" @click=selectOption()>Get</button>
   </div>
   <body>
-  <div id="display">
+  <div v-if="stored">
     <table>
       <tr>
         <td id="left">
-          <img id="cover">
+          <img id="cover">{{cover}}
         </td>
         <td id="right">
-          <p id="info"></p>
-          <p id="basicInfo"></p>
-          <p id="vote"></p>
-          <p id="overviewLabel"></p>
-          <p id="overviewText"></p> 
-          <iframe id="video"></iframe>
+          <p id="info">{{info}}TEST TEXT</p>
+          <p id="basicInfo">{{basicInfo}}</p>
+          <p id="vote">{{vote}}</p>
+          <p id="overviewLabel">{{overviewLabel}}</p>
+          <p id="overviewText">{{overviewText}}</p> 
+          <iframe id="video">{{video}}</iframe>
         </td>
       </tr>
     </table>
@@ -58,11 +58,10 @@
       }
     })
     console.log(movie.value);
-
-    let infoResults = searchMovie.then((selectedMovie) => {       
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-    })
+    console.log(searchMovie);
   }
+
+  
 </script>
 
 <style scoped>
