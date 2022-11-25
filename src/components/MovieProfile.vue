@@ -18,7 +18,7 @@
     <button id="getButton" @click=selectOption()>Get</button>
   </div>
   <body>
-  <div >
+  <div v-show="hide">
     <table>
       <tr>
         <td id="left">
@@ -48,9 +48,10 @@
 <script setup>
   import axios from "axios";
   import { ref } from 'vue';
+
+  let hide = ref(false);
   
   const movie = ref(810693);
-  const contains = ref(false);
 
   let poster = ref("");
   let title = ref("");
@@ -81,21 +82,22 @@
         });
         return formatter.format(value);
     }
+    let movieInfo = searchMovie.then((movieData) => {
+      poster.value = "https://image.tmdb.org/t/p/w500" + movieData.data.poster_path;
+      title.value = movieData.data.title;
+      originalTitle.value = movieData.data.original_title;
+      genres.value = movieData.data.genres;
+      popularity.value = movieData.data.popularity;
+      revenue.value = formatPrice(movieData.data.revenue);
+      voteAverage.value = movieData.data.vote_average;
+      voteCount.value = movieData.data.vote_count;
+      runtime.value = movieData.data.runtime;
+      overviewText.value = movieData.data.overview;
+      video.value = "https://www.youtube.com/embed/" + (movieData.data.videos.results.filter((trailer) => trailer.type === "Trailer")).at(0).key;
+      hide = ref(true);
+    })
     
-    let posterTemp = searchMovie.then((movieData) => { poster.value = "https://image.tmdb.org/t/p/w500" + movieData.data.poster_path})
-    let titleTemp = searchMovie.then((movieData) => { title.value = movieData.data.title })
-    let originalTitleTemp = searchMovie.then((movieData) => { originalTitle.value = movieData.data.original_title })
-    let genresTemp = searchMovie.then((movieData) => { genres.value = movieData.data.genres })
-    let releaseDateTemp = searchMovie.then((movieData) => { releaseDate.value = movieData.data.release_date })
-    let popularityTemp = searchMovie.then((movieData) => { popularity.value = movieData.data.popularity })
-    let revenueTemp = searchMovie.then((movieData) => { revenue.value = formatPrice(movieData.data.revenue) })
-    let voteAverageTemp = searchMovie.then((movieData) => { voteAverage.value = movieData.data.vote_average })
-    let voteCountTemp = searchMovie.then((movieData) => { voteCount.value = movieData.data.vote_count })
-    let runtimeTemp = searchMovie.then((movieData) => { runtime.value = movieData.data.runtime })
-    let overviewTextTemp = searchMovie.then((movieData) => { overviewText.value = movieData.data.overview })
-    let videoTemp = searchMovie.then((movieData) => { video.value = "https://www.youtube.com/embed/" + (movieData.data.videos.results.filter((trailer) => trailer.type === "Trailer")).at(0).key })
   }
-
 </script>
 
 <style scoped>
